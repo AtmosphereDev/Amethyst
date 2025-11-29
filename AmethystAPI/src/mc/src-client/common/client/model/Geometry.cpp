@@ -54,7 +54,7 @@ inline std::array<Vec2, 4> getRotatedFaceUVs(float x1, float x2, float y1, float
             break;
 
         case QuadUVRotation::CW_90_DEG:
-            std::rotate(uvs.rbegin(), uvs.rbegin() + 1, uvs.rend());
+			std::rotate(uvs.begin(), uvs.begin() + 1, uvs.end());
             break;
 
         case QuadUVRotation::CW_180_DEG:
@@ -62,7 +62,7 @@ inline std::array<Vec2, 4> getRotatedFaceUVs(float x1, float x2, float y1, float
             break;
 
         case QuadUVRotation::CW_270_DEG:
-            std::rotate(uvs.begin(), uvs.begin() + 1, uvs.end());
+			std::rotate(uvs.rbegin(), uvs.rbegin() + 1, uvs.rend());
             break;
 
         default:
@@ -77,11 +77,11 @@ void TessellateBox(const Geometry::Box& box, Tessellator& tess, float texW, floa
 
     const Vec3 pivotScaled = box.mPivot / Vec3(16.f);
 
-    ref->translate(pivotScaled);
-    ref->rotateXRadians(box.mRotation.x);
-    ref->rotateYRadians(box.mRotation.y);
-    ref->rotateZRadians(box.mRotation.z);
     ref->translate(pivotScaled * -1.0f);
+    ref->rotateXRadians(-box.mRotation.x);
+    ref->rotateYRadians(-box.mRotation.y);
+    ref->rotateZRadians(-box.mRotation.z);
+    ref->translate(pivotScaled);
 
     std::array<Vec3, 8> verts = {
         Vec3(box.mFrom.x, box.mFrom.y, box.mFrom.z),                        // 0
