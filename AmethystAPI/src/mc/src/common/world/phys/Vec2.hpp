@@ -10,6 +10,7 @@ public:
     Vec2(float x, float y) : x(x), y(y) {}  
 
 	static Vec2 ZERO;
+	static Vec2 ONE;
 };
 
 template <>
