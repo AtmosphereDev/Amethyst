@@ -109,6 +109,10 @@ public:
     bool isInteractiveBlock() const;
     bool hasProperty(BlockProperty property) const;
 	bool requiresCorrectToolForDrops() const;
+
+	const HashedString& getFullName() const {
+		return mLegacyBlock->mNameInfo.mFullName;
+	}
 };
 
 #include "mc/src/common/world/level/block/Block.inl"

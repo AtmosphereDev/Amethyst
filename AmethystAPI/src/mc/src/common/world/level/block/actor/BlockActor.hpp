@@ -12,6 +12,9 @@
 #include <mc/src/common/network/packet/BlockActorDataPacket.hpp>
 #include <gsl/gsl>
 #include <amethyst/Imports.hpp>
+#include <mc/src/common/world/level/ChunkBlockPos.hpp>
+#include <mc/src/common/world/level/BlockSource.hpp>
+#include <mc/src/common/world/level/chunk/LevelChunk.hpp>
 
 // Auto-generated: Unknown complete types
 class UIProfanityContext {}; 
@@ -201,6 +204,24 @@ public:
 
 	void setChanged() {
 		mChanged = true;
+	}
+
+	std::shared_ptr<BlockActor> findSharedFromRegion(const BlockSource& source) const {
+		LevelChunk* chunk = source.getChunkAt(mPosition);
+		if (chunk == nullptr)
+			return nullptr;
+
+		chunk->mBlockEntityAccessLock.lock();
+		ChunkBlockPos chunkPos = ChunkBlockPos::ChunkBlockPos(mPosition, source.mMinHeight);
+
+		auto it = chunk->mBlockEntities.find(chunkPos);
+		if (it == chunk->mBlockEntities.end()) {
+			chunk->mBlockEntityAccessLock.unlock();
+			return nullptr;
+		}
+
+		chunk->mBlockEntityAccessLock.unlock();
+		return it->second;
 	}
 };
 

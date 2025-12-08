@@ -107,3 +107,7 @@ MobEffectInstance* Actor::getEffect(EffectType effectType) {
 	auto effect = MobEffect::mMobEffects[effectId].get();
 	return getEffect(*effect);
 }
+
+void Actor::applyImpulse(const Vec3& impulse) {
+	mBuiltInComponents.mStateVectorComponent->mPosDelta = mBuiltInComponents.mStateVectorComponent->mPosDelta + impulse;
+}
